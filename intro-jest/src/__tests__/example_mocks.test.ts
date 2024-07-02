@@ -1,5 +1,5 @@
 import { storage } from '../lib/storage';
-import { saveUsername } from '../user';
+import { saveUsername, getUsername } from '../user';
 
 jest.mock('../lib/storage.ts');
 
@@ -24,4 +24,15 @@ test('second example', () => {
     saveUsername(username);
     expect(storage.save).toHaveBeenCalledTimes(1);
     expect(storage.save).toHaveBeenCalledWith({ key: 'username', value: 'john doe'});
+})
+
+test('third example', () => {
+    const username = 'john doe';
+    storage.get.mockReturnValueOnce(username);
+
+    const result = getUsername();
+
+    expect(result).toBe(username);
+    expect(storage.save).toHaveBeenCalledTimes(1);
+    expect(storage.get).toHaveBeenCalledWith({ key: 'username', value: 'john doe'});
 })
